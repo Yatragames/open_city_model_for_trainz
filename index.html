@@ -22,13 +22,29 @@
             font-size: 18px;
             border: none;
             border-radius: 8px;
+            background: #222;
+            color: #fff;
         }
 
-        /* Responsive Grid */
+        /* Grid Layout */
         .grid {
             display: grid;
             gap: 15px;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(2, 1fr); /* Default for mobile */
+        }
+
+        /* Larger screen (Tablet) */
+        @media (min-width: 600px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Laptop/Desktop */
+        @media (min-width: 900px) {
+            .grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
 
         .item {
@@ -70,10 +86,11 @@
 <body>
 
     <!-- 🔍 Search Bar -->
-    <input type="text" id="searchBar" placeholder="Search 6 models...">
+    <input type="text" id="searchBar" placeholder="Search 7 models..." onkeyup="filterItems()">
 
     <!-- 📷 Image Grid -->
     <div class="grid" id="imageGrid">
+
 
         <!-- Example Image Item -->
         <div class="item" data-name="rock0">
@@ -135,18 +152,15 @@
     </div>
 
     <script>
-        // 🔍 Live Search Function
-        const searchInput = document.getElementById("searchBar");
-        const items = document.querySelectorAll(".item");
-
-        searchInput.addEventListener("input", function () {
-        const value = searchInput.value.toLowerCase();
+        function filterItems() {
+        let input = document.getElementById("searchBar").value.toLowerCase();
+        let items = document.querySelectorAll(".item");
 
         items.forEach(item => {
-        const name = item.getAttribute("data-name").toLowerCase();
-        item.style.display = name.includes(value) ? "block" : "none";
+        let name = item.getAttribute("data-name").toLowerCase();
+        item.style.display = name.includes(input) ? "block" : "none";
         });
-        });
+        }
     </script>
 
 </body>
