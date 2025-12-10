@@ -3,408 +3,592 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Image Grid</title>
+    <title>3D Model Gallery</title>
     <style>
-        body {
+        /* Reset and Base Styles */
+        * {
             margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: white;
-            min-height: 100vh;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Search Bar */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+            .header h1 {
+                font-size: 3rem;
+                margin-bottom: 10px;
+                background: linear-gradient(135deg, #00aaff 0%, #0066cc 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 700;
+                letter-spacing: -0.5px;
+            }
+
+            .header p {
+                color: #aaa;
+                font-size: 1.1rem;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+        /* Search and Counter */
+        .search-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
         #searchBar {
             width: 100%;
-            max-width: 600px;
-            padding: 12px 20px;
-            margin: 0 auto 30px;
-            display: block;
-            font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            background: #222;
+            padding: 18px 24px;
+            font-size: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
             color: #fff;
-            box-sizing: border-box;
+            outline: none;
             transition: all 0.3s ease;
+            margin-bottom: 15px;
         }
 
             #searchBar:focus {
-                outline: 2px solid #00aaff;
-                box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.2);
+                border-color: #00aaff;
+                box-shadow: 0 0 0 4px rgba(0, 170, 255, 0.2);
+                background: rgba(255, 255, 255, 0.08);
             }
 
-        /* Grid Layout */
+            #searchBar::placeholder {
+                color: #888;
+            }
+
+        .counter {
+            text-align: center;
+            color: #888;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* GRID SYSTEM */
         .grid {
             display: grid;
-            gap: 20px;
-            grid-template-columns: repeat(1, 1fr); /* Default for mobile */
+            gap: 25px;
+            margin-bottom: 50px;
         }
 
-        /* Tablet (2 columns) */
-        @media (min-width: 600px) {
-            .grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        /* Mobile: 2 columns */
+        .grid {
+            grid-template-columns: repeat(2, 1fr);
         }
 
-        /* Large Tablet (3 columns) */
+        /* Tablet: 3 columns */
         @media (min-width: 768px) {
             .grid {
                 grid-template-columns: repeat(3, 1fr);
             }
         }
 
-        /* Desktop (4 columns) */
+        /* Desktop: 4 columns */
         @media (min-width: 1024px) {
             .grid {
                 grid-template-columns: repeat(4, 1fr);
             }
         }
 
-        /* Large Desktop (5 columns) */
+        /* Large Desktop: 5 columns */
         @media (min-width: 1440px) {
             .grid {
                 grid-template-columns: repeat(5, 1fr);
             }
+
+            .container {
+                padding: 0 40px;
+            }
+
+            .header h1 {
+                font-size: 3.5rem;
+            }
         }
 
+        /* Grid Items */
         .item {
-            background: #222;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
             display: flex;
             flex-direction: column;
             height: 100%;
         }
 
             .item:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-                background: #2a2a2a;
+                transform: translateY(-8px);
+                box-shadow: 0 20px 40px rgba(0, 170, 255, 0.2);
+                border-color: rgba(0, 170, 255, 0.3);
+                background: rgba(255, 255, 255, 0.08);
             }
 
             .item img {
                 width: 100%;
-                height: 200px;
+                height: 220px;
                 object-fit: cover;
-                border-radius: 8px;
-                margin-bottom: 15px;
-                background: #333;
+                display: block;
+                transition: transform 0.3s ease;
+                background: linear-gradient(135deg, #222 0%, #333 100%);
             }
 
-            .item[style*="display: none"] {
-                display: none !important;
+            .item:hover img {
+                transform: scale(1.05);
             }
+
+        .item-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
         .btn {
             margin-top: auto;
-            padding: 12px;
-            width: 100%;
-            background: linear-gradient(135deg, #00aaff, #0088cc);
+            padding: 16px;
+            background: linear-gradient(135deg, #00aaff 0%, #0066cc 100%);
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
+            border-radius: 10px;
             color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
+            text-align: center;
             text-decoration: none;
             display: block;
+            letter-spacing: 0.5px;
         }
 
             .btn:hover {
-                background: linear-gradient(135deg, #0088cc, #006699);
-                transform: scale(1.02);
+                background: linear-gradient(135deg, #0088dd 0%, #0055aa 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(0, 170, 255, 0.3);
             }
 
-        /* No results message */
+            .btn:active {
+                transform: translateY(0);
+            }
+
+        /* No Results */
         .no-results {
-            text-align: center;
             grid-column: 1 / -1;
-            padding: 40px;
+            text-align: center;
+            padding: 60px 20px;
             color: #888;
-            font-size: 18px;
             display: none;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 2px dashed rgba(255, 255, 255, 0.1);
         }
 
-        /* Header */
-        .header {
-            text-align: center;
+            .no-results p {
+                font-size: 1.1rem;
+                margin-bottom: 10px;
+            }
+
+        /* Info Sections */
+        .info-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
             margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-            .header h1 {
-                margin: 0;
-                font-size: 2.5rem;
-                background: linear-gradient(135deg, #00aaff, #0088cc);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-            }
-
-            .header p {
-                color: #888;
-                margin-top: 10px;
-            }
-
-        /* Counter */
-        .counter {
-            text-align: center;
-            color: #888;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        /* Copyright Disclaimer */
-        .copyright-disclaimer {
-            margin-top: 60px;
-            padding: 25px;
-            background: #1a1a1a;
-            border-radius: 12px;
-            border-left: 4px solid #00aaff;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #ccc;
-        }
-
-            .copyright-disclaimer h3 {
-                margin-top: 0;
+            .info-section h3 {
                 color: #00aaff;
-                font-size: 18px;
+                margin-bottom: 20px;
+                font-size: 1.5rem;
+                font-weight: 600;
                 display: flex;
                 align-items: center;
                 gap: 10px;
             }
 
-                .copyright-disclaimer h3:before {
-                    content: "⚠️";
-                }
+            .info-section p {
+                color: #ccc;
+                margin-bottom: 15px;
+                line-height: 1.7;
+            }
 
-            .copyright-disclaimer ul {
+            .info-section ul {
                 padding-left: 20px;
                 margin: 15px 0;
             }
 
-            .copyright-disclaimer li {
+            .info-section li {
+                color: #ccc;
                 margin-bottom: 8px;
+                line-height: 1.6;
             }
-
-            .copyright-disclaimer a {
-                color: #00aaff;
-                text-decoration: none;
-                font-weight: bold;
-                transition: color 0.2s;
-            }
-
-                .copyright-disclaimer a:hover {
-                    color: #0088cc;
-                    text-decoration: underline;
-                }
 
         .warning {
             color: #ff9900;
-            font-weight: bold;
+            font-weight: 600;
             background: rgba(255, 153, 0, 0.1);
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
             display: inline-block;
             margin: 5px 0;
         }
 
         .free-use {
             color: #00cc66;
-            font-weight: bold;
+            font-weight: 600;
             background: rgba(0, 204, 102, 0.1);
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
             display: inline-block;
             margin: 5px 0;
         }
 
-        .sketchfab-link {
+        .sketchfab-link, .youtube-link {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: #1a1a1a;
-            padding: 10px 20px;
-            border-radius: 8px;
-            margin-top: 10px;
-            border: 1px solid #333;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #00aaff;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 15px 0;
+            border: 1px solid rgba(0, 170, 255, 0.2);
+            transition: all 0.3s ease;
         }
 
-            .sketchfab-link img {
-                width: 20px;
-                height: 20px;
-                filter: invert(1);
+            .sketchfab-link:hover, .youtube-link:hover {
+                background: rgba(0, 170, 255, 0.1);
+                border-color: rgba(0, 170, 255, 0.4);
+                transform: translateY(-2px);
+            }
+
+        .youtube-link {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff4444;
+            border-color: rgba(255, 0, 0, 0.2);
+        }
+
+            .youtube-link:hover {
+                background: rgba(255, 0, 0, 0.2);
+                border-color: rgba(255, 0, 0, 0.4);
+            }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: #888;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+            .footer p {
+                opacity: 0.8;
+            }
+
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            body {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .search-wrapper {
+                padding: 20px;
+            }
+
+            #searchBar {
+                padding: 16px 20px;
+            }
+
+            .info-section {
+                padding: 20px;
+            }
+
+                .info-section h3 {
+                    font-size: 1.3rem;
+                }
+
+            .grid {
+                gap: 15px;
+            }
+
+            .item img {
+                height: 180px;
+            }
+
+            .item-content {
+                padding: 15px;
+            }
+
+            .btn {
+                padding: 14px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .item img {
+                height: 200px;
+            }
+        }
+
+        /* Animation for items */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .item {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+            .item:nth-child(1) {
+                animation-delay: 0.1s;
+            }
+
+            .item:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            .item:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+
+            .item:nth-child(4) {
+                animation-delay: 0.4s;
+            }
+
+            .item:nth-child(5) {
+                animation-delay: 0.5s;
             }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <h1>3D Model Gallery</h1>
-        <p>Browse and download our collection of 3D models</p>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>3D Model Gallery</h1>
+            <p>Professional 3D models for Trainz simuulator 12 projects</p>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-wrapper">
+            <input type="text" id="searchBar" placeholder="Search 3D models by name..." autocomplete="off">
+            <div class="counter" id="counter">
+                Showing <span id="count">9</span> of 9 models
+            </div>
+        </div>
+
+        <!-- Grid System: 2 columns on mobile, 5 columns on desktop -->
+        <div class="grid" id="imageGrid">
+            
+
+            <!-- Example Image Item -->
+
+            <div class="item" data-name="rock0 rock model">
+                <img src="UI/img0.png" alt="Rock 0 Model" loading="lazy">
+                <button class="btn" onclick="window.open('https://drive.google.com/file/d/1tvmlurWxW1HeEwqiF2WrZZlNJc40BFLj/view?usp=drive_link', '_blank')">
+                    rock0
+                </button>
+            </div>
+
+            <div class="item" data-name="rock1 rock model">
+                <img src="UI/img1.png" alt="Rock 1 Model" loading="lazy">
+                <button class="btn" onclick="window.open('https://drive.google.com/file/d/1cyJpvGq5OANp1ejZbE5gDb11V6EE4o6C/view?usp=drive_link', '_blank')">
+                    rock1
+                </button>
+            </div>
+
+            <div class="item" data-name="lego model lego build1">
+                <img src="UI/img2.jpg" alt="Lego Model 1" loading="lazy">
+                <button class="btn" onclick="window.open('https://drive.google.com/drive/folders/1t-sgiBic3lFUmRyWlhWbv634ahM6E5bz', '_blank')">
+                    Lego Build 1
+                </button>
+            </div>
+
+            <div class="item" data-name="lego model lego build2 v1">
+                <img src="UI/img3.jpg" alt="Lego Model 2" loading="lazy">
+                <button class="btn" onclick="window.open('https://drive.google.com/file/d/1sHyZ5ibnUNIq5hHkUcd2SMHKCo7RM9KZ/view?usp=drivesdk', '_blank')">
+                    Lego Build 2 v1
+                </button>
+            </div>
+
+            <div class="item" data-name="lego model building build3">
+                <img src="UI/img4.png" alt="Lego Model 3" loading="lazy">
+                <button class="btn" onclick="window.open('https://drive.google.com/file/d/1Kp08pfghBbqTmWHlvNq45smK4rbqAaNz/view?usp=drivesdk', '_blank')">
+                    Building Build 3
+                </button>
+            </div>
+
+            <div class="item" data-name="lego model trackside object">
+                <img src="UI/img5.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('https://drive.google.com/file/d/1qmnfAvfFUqmBZAhoqddwN0_kws83HSRh/view?usp=drivesdk', '_blank')">
+                    Trackside Object
+                </button>
+            </div>
+
+            <div class="item" data-name="lego model trackside object">
+                <img src="UI/img6.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('https://drive.google.com/file/d/1Rkwkh881v35Mcvenl2-_-Ky8dowOWucW/view?usp=drivesdk', '_blank')">
+                    water tank0
+                </button>
+            </div>
+
+            <div class="item" data-name="lego model trackside object">
+                <img src="UI/img7.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('https://drive.google.com/file/d/1ttofEV9lnb3mm0EPtSAGhKaKIraY_lcu/view?usp=drivesdk', '_blank')">
+                    building0
+                </button>
+            </div>
+
+            <div class="item" data-name="lego model trackside object">
+                <img src="UI/img8.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('https://drive.google.com/file/d/1-UrcLGydPo83AZs0_TAYDLdHR-A-zlpo/view?usp=drivesdk', '_blank')">
+                    building1
+                </button>
+            </div>
+
+            <!-- <div class="item" data-name="lego model trackside object">
+                <img src="UI/img9.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('', '_blank')">
+                    Download Trackside Object
+                </button>
+            </div>
+
+            <div class="item" data-name="lego model trackside object">
+                <img src="UI/img10.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('', '_blank')">
+                    Download Trackside Object
+                </button>
+            </div>
+
+            <div class="item" data-name="lego model trackside object">
+                <img src="UI/img11.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('', '_blank')">
+                    Download Trackside Object
+                </button>
+            </div>
+
+            <div class="item" data-name="lego model trackside object">
+                <img src="UI/img12.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('', '_blank')">
+                    Download Trackside Object
+                </button>
+            </div>
+
+            <!-- Add more items as needed -->
+            <div class="item" data-name="rock2 rock model">
+                <img src="https://via.placeholder.com/400x300/333/666?text=Rock+2" alt="Rock 2 Model" loading="lazy">
+                <button class="btn" onclick="window.open('#', '_blank')">
+                    all download
+                </button>
+            </div>
+        </div> -->
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults">
+            <p>No models found matching your search.</p>
+            <p style="margin-top: 10px; color: #aaa;">Try a different search term</p>
+        </div>
+
+        <!-- Copyright Disclaimer -->
+        <div class="copyright-disclaimer">
+            <h3>📋 Copyright & Usage Information</h3>
+
+            <p><span class="free-use">✅ FREE TO USE</span> - All models on this page are <strong>copyright free</strong> and can be used in your games/projects without giving credit.</p>
+
+            <p><span class="warning">⚠️ IMPORTANT NOTE</span> - These are processed/download versions. The <strong>original raw files</strong> are available on SketchFab:</p>
+
+            <a href="https://sketchfab.com/routestore6" target="_blank" class="sketchfab-link">
+                📦 Original Models: https://sketchfab.com/routestore6
+            </a>
+
+            <ul>
+                <li>If you use the <strong>raw models from SketchFab</strong>, you <strong>MUST give credit</strong> to the original creator</li>
+                <li>Failure to credit when using raw SketchFab models may result in <strong>copyright strikes</strong></li>
+                <li>The models on this page (Google Drive downloads) are <strong>processed versions</strong> that don't require attribution</li>
+                <li>For commercial use, verify licensing requirements on the original SketchFab page</li>
+            </ul>
+
+            <p><strong>Summary:</strong> Use these Google Drive downloads freely in games. Use SketchFab originals only with proper credit/attribution.</p>
+        </div>
+
+        <!-- YouTube Channel Link -->
+        <div class="youtube-channel">
+            <h3>🎬 Check out our YouTube Channel</h3>
+            <a href="https://youtube.com/@ind_train_sim_studio?si=yuakaOFkGkwOoxeF" target="_blank" class="youtube-link">
+                Open_city - YouTube Channel
+            </a>
+        </div>
+
+        <!-- Footer with Powered by -->
+        <footer class="footer">
+            <p>Powered by Yatra Games</p>
+        </footer>
     </div>
-
-    <!-- Search Counter -->
-    <div class="counter" id="counter">
-        Showing <span id="count">7</span> of 9 models
-    </div>
-
-    <!-- 🔍 Search Bar -->
-    <input type="text" id="searchBar" placeholder="Search 9 models..." autocomplete="off">
-
-    <!-- 📷 Image Grid -->
-    <div class="grid" id="imageGrid">
-        <!-- Example Image Item -->
-        <div class="item" data-name="rock0 rock model">
-            <img src="UI/img0.png" alt="Rock 0 Model" loading="lazy">
-            <button class="btn" onclick="window.open('https://drive.google.com/file/d/1tvmlurWxW1HeEwqiF2WrZZlNJc40BFLj/view?usp=drive_link', '_blank')">
-                rock0
-            </button>
-        </div>
-
-        <div class="item" data-name="rock1 rock model">
-            <img src="UI/img1.png" alt="Rock 1 Model" loading="lazy">
-            <button class="btn" onclick="window.open('https://drive.google.com/file/d/1cyJpvGq5OANp1ejZbE5gDb11V6EE4o6C/view?usp=drive_link', '_blank')">
-                rock1
-            </button>
-        </div>
-
-        <div class="item" data-name="lego model lego build1">
-            <img src="UI/img2.jpg" alt="Lego Model 1" loading="lazy">
-            <button class="btn" onclick="window.open('https://drive.google.com/drive/folders/1t-sgiBic3lFUmRyWlhWbv634ahM6E5bz', '_blank')">
-                Lego Build 1
-            </button>
-        </div>
-
-        <div class="item" data-name="lego model lego build2 v1">
-            <img src="UI/img3.jpg" alt="Lego Model 2" loading="lazy">
-            <button class="btn" onclick="window.open('https://drive.google.com/file/d/1sHyZ5ibnUNIq5hHkUcd2SMHKCo7RM9KZ/view?usp=drivesdk', '_blank')">
-                Lego Build 2 v1
-            </button>
-        </div>
-
-        <div class="item" data-name="lego model building build3">
-            <img src="UI/img4.png" alt="Lego Model 3" loading="lazy">
-            <button class="btn" onclick="window.open('https://drive.google.com/file/d/1Kp08pfghBbqTmWHlvNq45smK4rbqAaNz/view?usp=drivesdk', '_blank')">
-                Building Build 3
-            </button>
-        </div>
-
-        <div class="item" data-name="lego model trackside object">
-            <img src="UI/img5.png" alt="Lego Model Trackside" loading="lazy">
-            <button class="btn" onclick="window.open('https://drive.google.com/file/d/1qmnfAvfFUqmBZAhoqddwN0_kws83HSRh/view?usp=drivesdk', '_blank')">
-                Trackside Object
-            </button>
-        </div>
-
-        <div class="item" data-name="lego model trackside object">
-            <img src="UI/img6.png" alt="Lego Model Trackside" loading="lazy">
-            <button class="btn" onclick="window.open('https://drive.google.com/file/d/1Rkwkh881v35Mcvenl2-_-Ky8dowOWucW/view?usp=drivesdk', '_blank')">
-                water tank0
-            </button>
-        </div>
-
-        <div class="item" data-name="lego model trackside object">
-            <img src="UI/img7.png" alt="Lego Model Trackside" loading="lazy">
-            <button class="btn" onclick="window.open('https://drive.google.com/file/d/1ttofEV9lnb3mm0EPtSAGhKaKIraY_lcu/view?usp=drivesdk', '_blank')">
-                building0
-            </button>
-        </div>
-
-        <div class="item" data-name="lego model trackside object">
-            <img src="UI/img8.png" alt="Lego Model Trackside" loading="lazy">
-            <button class="btn" onclick="window.open('https://drive.google.com/file/d/1-UrcLGydPo83AZs0_TAYDLdHR-A-zlpo/view?usp=drivesdk', '_blank')">
-                building1
-            </button>
-        </div>
-
-        <!-- <div class="item" data-name="lego model trackside object">
-            <img src="UI/img9.png" alt="Lego Model Trackside" loading="lazy">
-            <button class="btn" onclick="window.open('', '_blank')">
-                Download Trackside Object
-            </button>
-        </div>
-
-        <div class="item" data-name="lego model trackside object">
-            <img src="UI/img10.png" alt="Lego Model Trackside" loading="lazy">
-            <button class="btn" onclick="window.open('', '_blank')">
-                Download Trackside Object
-            </button>
-        </div>
-
-        <div class="item" data-name="lego model trackside object">
-            <img src="UI/img11.png" alt="Lego Model Trackside" loading="lazy">
-            <button class="btn" onclick="window.open('', '_blank')">
-                Download Trackside Object
-            </button>
-        </div>
-
-        <div class="item" data-name="lego model trackside object">
-            <img src="UI/img12.png" alt="Lego Model Trackside" loading="lazy">
-            <button class="btn" onclick="window.open('', '_blank')">
-                Download Trackside Object
-            </button>
-        </div>
-
-        <!-- Add more items as needed -->
-        <div class="item" data-name="rock2 rock model">
-            <img src="https://via.placeholder.com/400x300/333/666?text=Rock+2" alt="Rock 2 Model" loading="lazy">
-            <button class="btn" onclick="window.open('#', '_blank')">
-                all download
-            </button>
-        </div>
-    </div> -->
-
-    <!-- No Results Message -->
-    <div class="no-results" id="noResults">
-        No models found matching your search.
-    </div>
-
-    <!-- Copyright Disclaimer -->
-    <div class="copyright-disclaimer">
-        <h3>Copyright & Usage Information</h3>
-
-        <p><span class="free-use">✅ FREE TO USE</span> - All models on this page are <strong>copyright free</strong> and can be used in your games/projects without giving credit.</p>
-
-        <p><span class="warning">⚠️ IMPORTANT NOTE</span> - These are processed/download versions. The <strong>original raw files</strong> are available on SketchFab:</p>
-
-        <a href="https://sketchfab.com/routestore6" target="_blank" class="sketchfab-link">
-            📦 Original Models: https://sketchfab.com/routestore6
-        </a>
-
-        <ul>
-            <li>If you use the <strong>raw models from SketchFab</strong>, you <strong>MUST give credit</strong> to the original creator</li>
-            <li>Failure to credit when using raw SketchFab models may result in <strong>copyright strikes</strong></li>
-            <li>The models on this page (Google Drive downloads) are <strong>processed versions</strong> that don't require attribution</li>
-            <li>For commercial use, verify licensing requirements on the original SketchFab page</li>
-        </ul>
-
-        <p><strong>Summary:</strong> Use these Google Drive downloads freely in games. Use SketchFab originals only with proper credit/attribution.</p>
-    </div>
-
-    <!-- YouTube Channel Link -->
-    <div class="youtube-channel">
-        <h3>Check out our YouTube Channel</h3>
-        <a href="https://youtube.com/@ind_train_sim_studio?si=yuakaOFkGkwOoxeF" target="_blank" class="youtube-link">
-            🎬 Open_city - YouTube Channel
-        </a>
-    </div>
-
-    <!-- Footer with Powered by -->
-    <footer class="footer">
-        <p>Powered by Yatra Games</p>
-    </footer>
 
     <script>
-        // Filter function with improved search and counter
+        // Mobile-optimized filter function
         function filterItems() {
-        const input = document.getElementById("searchBar").value.toLowerCase();
+        const input = document.getElementById("searchBar").value.toLowerCase().trim();
         const items = document.querySelectorAll(".item");
         const counter = document.getElementById("count");
         const noResults = document.getElementById("noResults");
@@ -412,11 +596,13 @@
 
         items.forEach(item => {
         const name = item.getAttribute("data-name").toLowerCase();
-        const isVisible = name.includes(input);
-        item.style.display = isVisible ? "flex" : "none";
+        const isVisible = input === '' || name.includes(input);
 
         if (isVisible) {
+        item.style.display = "block";
         visibleCount++;
+        } else {
+        item.style.display = "none";
         }
         });
 
@@ -431,21 +617,18 @@
         }
         }
 
-        // Add event listeners
+        // Mobile-optimized event handling
         document.addEventListener('DOMContentLoaded', () => {
         const searchBar = document.getElementById("searchBar");
+        let filterTimeout;
 
-        // Initial filter (in case of page refresh with search term)
+        // Initial filter to set counter
         filterItems();
 
-        // Add input event listener for real-time filtering
-        searchBar.addEventListener('input', filterItems);
-
-        // Add debouncing for better performance on rapid typing
-        let debounceTimer;
-        searchBar.addEventListener('keyup', () => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(filterItems, 300);
+        // Real-time filtering with debounce for mobile performance
+        searchBar.addEventListener('input', () => {
+        clearTimeout(filterTimeout);
+        filterTimeout = setTimeout(filterItems, 200);
         });
 
         // Clear search on Escape key
@@ -453,19 +636,52 @@
         if (e.key === 'Escape') {
         searchBar.value = '';
         filterItems();
-        searchBar.blur();
+        searchBar.blur(); // Hide keyboard on mobile
+        }
+        });
+
+        // Touch-friendly button handling
+        document.addEventListener('touchstart', (e) => {
+        if (e.target.classList.contains('btn')) {
+        e.target.style.transform = 'scale(0.98)';
+        }
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+        if (e.target.classList.contains('btn')) {
+        e.target.style.transform = '';
+        }
+        }, { passive: true });
+
+        // Track downloads
+        document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('btn')) {
+        const modelName = e.target.closest('.item').getAttribute('data-name');
+        console.log(`Download initiated: ${modelName}`);
+        // Add analytics here if needed
         }
         });
         });
 
-        // Add click handler for buttons to track downloads (optional analytics)
-        document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('btn')) {
-        const modelName = e.target.closest('.item').getAttribute('data-name');
-        console.log(`Download initiated for: ${modelName}`);
-        // You can add analytics tracking here
+        // Prevent zoom on double-tap (mobile optimization)
+        document.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 1) {
+        e.preventDefault();
         }
-        });
+        }, { passive: false });
+
+        // Better touch scrolling
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+        // Prevent scrolling when interacting with search
+        if (document.activeElement === searchBar) {
+        e.preventDefault();
+        }
+        }, { passive: false });
     </script>
 </body>
 </html>
