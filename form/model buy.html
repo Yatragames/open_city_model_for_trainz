@@ -1,0 +1,869 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yatra Games - Model Request</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: rgba(25, 25, 35, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        header {
+            background: linear-gradient(to right, #00c853, #00e676);
+            color: #000;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+
+            header h1 {
+                font-size: 2.5rem;
+                margin-bottom: 5px;
+                letter-spacing: 1px;
+            }
+
+            header p {
+                font-size: 1rem;
+                opacity: 0.9;
+            }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            font-size: 2rem;
+            color: #000;
+        }
+
+        .contact-info {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 0.9rem;
+            color: #000;
+            text-align: right;
+        }
+
+            .contact-info a {
+                color: #000;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+                .contact-info a:hover {
+                    text-decoration: underline;
+                }
+
+        .form-container {
+            padding: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #00c853;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .section-title i {
+                color: #00c853;
+            }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 500;
+            color: #ccc;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 5px;
+            background-color: #1e1e2e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+            input:focus, textarea:focus {
+                outline: none;
+                border-color: #00c853;
+                box-shadow: 0 0 0 2px rgba(0, 200, 83, 0.2);
+            }
+
+        .option-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .option-box {
+            background-color: #1e1e2e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+            .option-box:hover {
+                border-color: #666;
+                background-color: #252538;
+            }
+
+            .option-box.selected {
+                border-color: #00c853;
+                background-color: rgba(0, 200, 83, 0.1);
+            }
+
+            .option-box input {
+                display: none;
+            }
+
+        .option-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .option-icon {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #00c853;
+        }
+
+        .option-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .option-price {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #00e676;
+            margin-bottom: 5px;
+        }
+
+        .option-description {
+            font-size: 0.85rem;
+            color: #aaa;
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+
+        .freelance-option {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(30, 30, 46, 0.8);
+            border-radius: 10px;
+            border: 2px dashed #444;
+            transition: all 0.3s;
+        }
+
+            .freelance-option.selected {
+                border-color: #ff9800;
+                background-color: rgba(255, 152, 0, 0.1);
+            }
+
+        .freelance-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .freelance-icon {
+            font-size: 2.5rem;
+            color: #ff9800;
+        }
+
+        .freelance-text {
+            flex: 1;
+        }
+
+        .freelance-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ff9800;
+            margin-bottom: 5px;
+        }
+
+        .freelance-description {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        .freelance-price-range {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff9800;
+            text-align: right;
+        }
+
+        .freelance-details {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(40, 40, 60, 0.8);
+            border-radius: 8px;
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: none;
+        }
+
+            .freelance-details.show {
+                display: block;
+            }
+
+        .price-info {
+            background: linear-gradient(to right, rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.05));
+            border-left: 4px solid #ff9800;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #ffcc80;
+        }
+
+        .price-preview {
+            background: linear-gradient(to right, #1a237e, #311b92);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            text-align: center;
+            border: 1px solid #444;
+        }
+
+        .price-label {
+            font-size: 1rem;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
+        .total-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00e676;
+        }
+
+        .price-breakdown {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #ccc;
+            line-height: 1.5;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-top: 25px;
+            background: linear-gradient(to right, #00c853, #00e676);
+            color: #000;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+
+            .submit-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 7px 15px rgba(0, 200, 83, 0.3);
+            }
+
+            .submit-btn:active {
+                transform: translateY(-1px);
+            }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        .optional-badge {
+            display: inline-block;
+            background: linear-gradient(to right, #ff9800, #ff5722);
+            color: #000;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 10px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .option-group {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .logo, .contact-info {
+                position: relative;
+                top: 0;
+                left: 0;
+                right: 0;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            .freelance-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .freelance-price-range {
+                text-align: center;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-gamepad"></i>
+            </div>
+            <div class="contact-info">
+                Contact: <a href="mailto:trainzsimulatoractivityhelp@gmail.com">contact@yatragames.com</a>
+            </div>
+            <h1>Yatra Games</h1>
+            <p>3D Model Request Form</p>
+        </header>
+
+        <div class="form-container">
+            <form id="modelRequestForm" onsubmit="sendMail(); return false;">
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-user"></i>
+                        <span>Client Information</span>
+                    </div>
+                    <label for="name">Enter your name</label>
+                    <input type="text" id="name" required placeholder="Your full name">
+
+                    <label for="email">Your email address</label>
+                    <input type="email" id="email" required placeholder="your.email@example.com">
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-cube"></i>
+                        <span>Model Details</span>
+                    </div>
+
+                    <label for="models">How many models do you need?</label>
+                    <input type="number" id="models" min="1" value="1" required>
+
+                    <label for="refs">How many reference photos?</label>
+                    <input type="number" id="refs" min="0" value="0" required>
+
+                    <label for="drive">Google Drive link (ZIP of reference photos)</label>
+                    <input type="text" id="drive" placeholder="Paste Google Drive link here">
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-file-export"></i>
+                        <span>Format Selection (Select one or both)</span>
+                    </div>
+                    <p style="margin-bottom: 10px; color: #aaa;">You can select Trainz, Blender, or both:</p>
+                    <div class="option-group" id="formatGroup">
+                        <div class="option-box" data-option="trainz" data-price="1">
+                            <div class="option-content">
+                                <div class="option-icon">
+                                    <i class="fas fa-train"></i>
+                                </div>
+                                <div class="option-name">Trainz</div>
+                                <div class="option-price">₹1 per model</div>
+                            </div>
+                            <input type="checkbox" id="trainz" name="format">
+                        </div>
+
+                        <div class="option-box" data-option="blender" data-price="8">
+                            <div class="option-content">
+                                <div class="option-icon">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                                <div class="option-name">Blender</div>
+                                <div class="option-price">₹8 per model</div>
+                            </div>
+                            <input type="checkbox" id="blender" name="format">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-sitemap"></i>
+                        <span>Model Detail Level</span>
+                    </div>
+                    <p style="margin-bottom: 10px; color: #aaa;">Select one detail level:</p>
+                    <div class="option-group" id="detailGroup">
+                        <div class="option-box" data-option="low" data-price="1">
+                            <div class="option-content">
+                                <div class="option-icon">
+                                    <i class="fas fa-layer-group"></i>
+                                </div>
+                                <div class="option-name">Low Poly</div>
+                                <div class="option-price">₹1 per model</div>
+                                <div class="option-description">
+                                    Perfect for Trainz, mobile games, and performance-focused applications
+                                </div>
+                            </div>
+                            <input type="checkbox" id="low" name="detail">
+                        </div>
+
+                        <div class="option-box" data-option="medium" data-price="5">
+                            <div class="option-content">
+                                <div class="option-icon">
+                                    <i class="fas fa-cubes"></i>
+                                </div>
+                                <div class="option-name">Medium Poly</div>
+                                <div class="option-price">₹5 per model</div>
+                                <div class="option-description">
+                                    Balanced detail and performance for most PC games
+                                </div>
+                            </div>
+                            <input type="checkbox" id="medium" name="detail">
+                        </div>
+
+                        <div class="option-box" data-option="high" data-price="7">
+                            <div class="option-content">
+                                <div class="option-icon">
+                                    <i class="fas fa-gem"></i>
+                                </div>
+                                <div class="option-name">High Poly</div>
+                                <div class="option-price">₹7 per model</div>
+                                <div class="option-description">
+                                    High detail for close-up shots
+                                </div>
+                            </div>
+                            <input type="checkbox" id="high" name="detail">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-user-tie"></i>
+                        <span>3D Modeler (Freelance Service) <span class="optional-badge">OPTIONAL</span></span>
+                    </div>
+
+                    <div class="freelance-option" id="freelanceOption">
+                        <div class="freelance-content">
+                            <div class="freelance-icon">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <div class="freelance-text">
+                                <div class="freelance-title">Complete 3D Modeling Service</div>
+                                <div class="freelance-description">I make 3D models for games: houses, buildings texture only</div>
+                            </div>
+                            <div class="freelance-price-range">
+                                ₹500 - ₹1,500+
+                            </div>
+                            <input type="checkbox" id="freelance" name="freelance">
+                        </div>
+                        <div class="freelance-details" id="freelanceDetails">
+                            <p><strong>Service Description:</strong> This is an optional service that includes complete 3D modeling, texturing, and optimization for your specified format. Perfect for game developers needing ready-to-use assets.</p>
+
+                            <p style="margin-top: 10px;"><strong>Price Range:</strong></p>
+                            <ul style="margin-top: 5px; padding-left: 20px;">
+                                <li>Simple buildings/exteriors: ₹500 - ₹800</li>
+                                <li>Detailed buildings with interiors: ₹800 - ₹1,200</li>
+                                <li>Complex structures with full interior: ₹1,200 - ₹1,500+</li>
+                            </ul>
+
+                            <p style="margin-top: 10px; font-style: italic;">Note: Final price depends on model complexity, detail level, and specific requirements. Building interiors are included in the quoted price.</p>
+                        </div>
+                    </div>
+
+                    <div class="price-info">
+                        <i class="fas fa-info-circle"></i> Selecting the freelance service will override the standard pricing. You'll receive a custom quote based on your specific requirements after submitting this form.
+                    </div>
+                </div>
+
+                <div class="price-preview">
+                    <div class="price-label">ESTIMATED TOTAL</div>
+                    <div class="total-price" id="totalPrice">₹0</div>
+                    <div class="price-breakdown" id="priceBreakdown">
+                        Base: ₹0 | References: ₹0 | Format: ₹0 | Detail: ₹0
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Send Request via Email
+                </button>
+
+                <div class="footer-note">
+                    <p><i class="fas fa-envelope"></i> You'll receive a confirmation email at the address you provided.</p>
+                    <p>If you selected the freelance service, you'll receive a custom quote within 24 hours.</p>
+                    <p>Contact us at <strong>contact@yatragames.com</strong> for any queries.</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize total price
+        updateTotalPrice();
+
+        // Set up option box selection for formats (can select both)
+        const formatBoxes = document.querySelectorAll('#formatGroup .option-box');
+        formatBoxes.forEach(box => {
+        box.addEventListener('click', function() {
+        const checkbox = this.querySelector('input');
+        checkbox.checked = !checkbox.checked;
+
+        if (checkbox.checked) {
+        this.classList.add('selected');
+        } else {
+        this.classList.remove('selected');
+        }
+
+        updateTotalPrice();
+        });
+        });
+
+        // Set up option box selection for detail levels (only one)
+        const detailBoxes = document.querySelectorAll('#detailGroup .option-box');
+        detailBoxes.forEach(box => {
+        box.addEventListener('click', function() {
+        // Uncheck all detail checkboxes
+        document.querySelectorAll('#detailGroup input').forEach(checkbox => {
+        checkbox.checked = false;
+        });
+
+        // Remove selected class from all detail boxes
+        detailBoxes.forEach(b => b.classList.remove('selected'));
+
+        // Check the clicked checkbox and add selected class
+        const checkbox = this.querySelector('input');
+        checkbox.checked = true;
+        this.classList.add('selected');
+
+        updateTotalPrice();
+        });
+        });
+
+        // Set up freelance option
+        const freelanceOption = document.getElementById('freelanceOption');
+        const freelanceCheckbox = document.getElementById('freelance');
+        const freelanceDetails = document.getElementById('freelanceDetails');
+
+        freelanceOption.addEventListener('click', function() {
+        freelanceCheckbox.checked = !freelanceCheckbox.checked;
+
+        if (freelanceCheckbox.checked) {
+        this.classList.add('selected');
+        freelanceDetails.classList.add('show');
+        } else {
+        this.classList.remove('selected');
+        freelanceDetails.classList.remove('show');
+        }
+
+        updateTotalPrice();
+        });
+
+        // Update price when inputs change
+        document.getElementById('models').addEventListener('input', updateTotalPrice);
+        document.getElementById('refs').addEventListener('input', updateTotalPrice);
+
+        // Function to calculate and update total price
+        function updateTotalPrice() {
+        const models = parseInt(document.getElementById('models').value) || 0;
+        const refs = parseInt(document.getElementById('refs').value) || 0;
+
+        // Check if freelance option is selected
+        const isFreelance = document.getElementById('freelance').checked;
+
+        let total = 0;
+        let breakdown = "";
+
+        if (isFreelance) {
+        // Freelance pricing (estimate based on model count)
+        const baseEstimate = models <= 1 ? 500 : models * 600;
+        const maxEstimate = models <= 1 ? 1500 : models * 900;
+
+        total = baseEstimate;
+        breakdown = `Freelance Service (Custom Quote): ₹${baseEstimate} - ₹${maxEstimate}+ (Price depends on model complexity)`;
+        } else {
+        // Regular pricing
+        let formatPrice = 0;
+        let formatNames = [];
+        let formatTotal = 0;
+
+        // Calculate format costs (can be multiple)
+        const selectedFormats = document.querySelectorAll('#formatGroup input:checked');
+        selectedFormats.forEach(format => {
+        const box = format.closest('.option-box');
+        const price = parseInt(box.dataset.price) || 0;
+        const name = box.dataset.option === 'trainz' ? 'Trainz' : 'Blender';
+        formatPrice += price;
+        formatNames.push(name);
+        });
+
+        // Get selected detail level
+        let detailPrice = 0;
+        let detailName = "None";
+        const selectedDetail = document.querySelector('#detailGroup input:checked');
+        if (selectedDetail) {
+        const box = selectedDetail.closest('.option-box');
+        detailPrice = parseInt(box.dataset.price) || 0;
+        detailName = box.dataset.option === 'low' ? 'Low Poly' :
+        box.dataset.option === 'medium' ? 'Medium Poly' : 'High Poly';
+        }
+
+        // Calculate costs
+        const modelBase = 4 * models;
+        const refCost = refs * 1;
+        const formatCost = formatPrice * models;
+        const detailCost = detailPrice * models;
+
+        total = modelBase + refCost + formatCost + detailCost;
+
+        // Create breakdown text
+        const formatText = formatNames.length > 0 ? formatNames.join(' + ') : 'None';
+        breakdown = `Base: ₹${modelBase} | References: ₹${refCost} | Format (${formatText}): ₹${formatCost} | Detail (${detailName}): ₹${detailCost}`;
+        }
+
+        // Update display
+        document.getElementById('totalPrice').textContent = isFreelance ? 'Custom Quote' : `₹${total}`;
+        document.getElementById('priceBreakdown').textContent = breakdown;
+        }
+
+        // Function to send email
+        function sendMail() {
+        // Get form values
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const models = parseInt(document.getElementById("models").value) || 0;
+        const refs = parseInt(document.getElementById("refs").value) || 0;
+        const drive = document.getElementById("drive").value;
+
+        // Validate required fields
+        if (!name.trim()) {
+        alert("Please enter your name.");
+        return false;
+        }
+
+        if (!email.trim() || !email.includes('@')) {
+        alert("Please enter a valid email address.");
+        return false;
+        }
+
+        if (models <= 0) {
+        alert("Please enter a valid number of models.");
+        return false;
+        }
+
+        // Check if freelance option is selected
+        const isFreelance = document.getElementById('freelance').checked;
+
+        let format = "";
+        let formatPrice = 0;
+        let formatNames = [];
+
+        if (!isFreelance) {
+        // Get selected formats
+        const selectedFormats = document.querySelectorAll('#formatGroup input:checked');
+        if (selectedFormats.length === 0) {
+        alert("Please select at least one format (Trainz or Blender).");
+        return false;
+        }
+
+        selectedFormats.forEach(formatEl => {
+        const box = formatEl.closest('.option-box');
+        const price = parseInt(box.dataset.price) || 0;
+        const name = box.dataset.option === 'trainz' ? 'Trainz' : 'Blender';
+        formatPrice += price;
+        formatNames.push(name);
+        });
+
+        format = formatNames.join(' + ');
+        }
+
+        // Get selected detail level (if not freelance)
+        let detail = "";
+        let detailPrice = 0;
+        let detailDescription = "";
+
+        if (!isFreelance) {
+        const selectedDetail = document.querySelector('#detailGroup input:checked');
+        if (!selectedDetail) {
+        alert("Please select a detail level.");
+        return false;
+        }
+
+        const box = selectedDetail.closest('.option-box');
+        detailPrice = parseInt(box.dataset.price) || 0;
+        if (box.dataset.option === 'low') {
+        detail = 'Low Poly';
+        detailDescription = 'Perfect for Trainz, mobile games, and performance-focused applications';
+        } else if (box.dataset.option === 'medium') {
+        detail = 'Medium Poly';
+        detailDescription = 'Balanced detail and performance for most PC games';
+        } else {
+        detail = 'High Poly';
+        detailDescription = 'High detail for close-up shots, cinematics, and premium assets';
+        }
+        }
+
+        // Calculate final price
+        let priceDetails = "";
+
+        if (isFreelance) {
+        const baseEstimate = models <= 1 ? 500 : models * 600;
+        const maxEstimate = models <= 1 ? 1500 : models * 900;
+
+        priceDetails =
+        `Freelance 3D Modeling Service (Custom Quote)
+        Estimated Range: ₹${baseEstimate} - ₹${maxEstimate}+
+        Price depends on model complexity
+        Building interiors included in quoted price
+
+        Service Description: I make 3D models for games: houses, buildings texture only.
+        This includes complete modeling, texturing, and optimization for your specified format.`;
+        } else {
+        const modelBase = 4 * models;
+        const refCost = refs * 1;
+        const formatCost = formatPrice * models;
+        const detailCost = detailPrice * models;
+        const total = modelBase + refCost + formatCost + detailCost;
+
+        priceDetails =
+        `Base Model Price: ₹4 x ${models} = ₹${modelBase}
+        Reference Photos: ₹1 x ${refs} = ₹${refCost}
+        Format Cost (${format}): ₹${formatPrice} x ${models} = ₹${formatCost}
+        Detail Cost (${detail}): ₹${detailPrice} x ${models} = ₹${detailCost}
+        Detail Description: ${detailDescription}
+
+        --------------------------------
+        TOTAL AMOUNT: ₹${total}`;
+        }
+
+        // Ask for confirmation with price summary
+        const confirmMessage = isFreelance
+        ? `You are about to request a quote for the Complete 3D Modeling service:
+
+        Service: I make 3D models for games: houses, buildings texture only
+        Models Required: ${models}
+        Reference Photos: ${refs}
+
+        You'll receive a custom quote based on model complexity.
+        Price Range: ₹${models <= 1 ? 500 : models * 600} - ₹${models <= 1 ? 1500 : models * 900}+
+
+        Proceed with submission?`
+        : `You are about to submit a request for ${models} model(s) with the following details:
+
+        Format: ${format}
+        Detail: ${detail} (${detailDescription})
+        Reference Photos: ${refs}
+
+        TOTAL AMOUNT: ₹${(4 * models) + (refs * 1) + (formatPrice * models) + (detailPrice * models)}
+
+        Proceed with submission?`;
+
+        if (!confirm(confirmMessage)) {
+        return false;
+        }
+
+        // Prepare email body
+        const body =
+        `Yatra Games - Model Request
+
+        CLIENT INFORMATION:
+        Name: ${name}
+        Email: ${email}
+
+        PROJECT DETAILS:
+        Models Required: ${models}
+        Reference Photos: ${refs}
+        Drive Link: ${drive || "Not provided"}
+
+        ${isFreelance ? "SERVICE SELECTED: 3D Modeler (Freelance Service)\n" : ""}
+        ${!isFreelance ? `Format Selected: ${format}\nDetail Level: ${detail}\n` : ""}
+
+        ------ PRICE DETAILS ------
+
+        ${priceDetails}
+
+        ${isFreelance ? "\nNOTE: You'll receive a custom quote within 24 hours based on the complexity of your requested models.\n" : "\n(Amount payable after model completion)\n"}
+
+        ADDITIONAL NOTES:
+        ${isFreelance ? "• Complete 3D modeling, texturing, and optimization service\n• Price depends on model complexity\n• Building interiors included in quoted price\n" : ""}
+        • All models are delivered in the specified format(s)
+        • Payment required after model completion and approval`;
+
+        const subject = encodeURIComponent(`${isFreelance ? 'Freelance Quote Request' : 'Model Request'} - ${name} - Yatra Games`);
+        const mailBody = encodeURIComponent(body);
+
+        // Open default mail client
+        window.location.href = `mailto:trainzsimulatoractivityhelp@gmail.com?subject=${subject}&body=${mailBody}`;
+        }
+    </script>
+
+</body>
+</html>

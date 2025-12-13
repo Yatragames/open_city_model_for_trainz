@@ -588,27 +588,27 @@
             </div>
 
             <!-- <div class="item" data-name="lego model trackside object">
-         <img src="UI/img10.png" alt="Lego Model Trackside" loading="lazy">
-         <button class="btn" onclick="window.open('', '_blank')">
-             Download Trackside Object
-         </button>
-     </div>
+                <img src="UI/img10.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('', '_blank')">
+                    Download Trackside Object
+                </button>
+            </div>
 
-     <div class="item" data-name="lego model trackside object">
-         <img src="UI/img11.png" alt="Lego Model Trackside" loading="lazy">
-         <button class="btn" onclick="window.open('', '_blank')">
-             Download Trackside Object
-         </button>
-     </div>
+            <div class="item" data-name="lego model trackside object">
+                <img src="UI/img11.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('', '_blank')">
+                    Download Trackside Object
+                </button>
+            </div>
 
-     <div class="item" data-name="lego model trackside object">
-         <img src="UI/img12.png" alt="Lego Model Trackside" loading="lazy">
-         <button class="btn" onclick="window.open('', '_blank')">
-             Download Trackside Object
-         </button>
-     </div>
+            <div class="item" data-name="lego model trackside object">
+                <img src="UI/img12.png" alt="Lego Model Trackside" loading="lazy">
+                <button class="btn" onclick="window.open('', '_blank')">
+                    Download Trackside Object
+                </button>
+            </div>
 
-     <!-- Add more items as needed -->
+            <!-- Add more items as needed -->
             <div class="item" data-name="rock2 rock model">
                 <img src="https://via.placeholder.com/400x300/333/666?text=Rock+2" alt="Rock 2 Model" loading="lazy">
                 <button class="btn" onclick="window.open('#', '_blank')">
@@ -738,24 +738,77 @@
         });
 
         // Prevent zoom on double-tap (mobile optimization)
-        document.addEventListener('touchstart', (e) => {
-        if (e.touches.length > 1) {
-        e.preventDefault();
+        // Prevent zoom on double-tap (mobile optimization)
+        document.addEventListener('touchstart', function(event) {
+        if (event.touches.length > 1) {
+        event.preventDefault();
         }
         }, { passive: false });
 
-        // Better touch scrolling
-        let touchStartY = 0;
-        document.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+        }
+        lastTouchEnd = now;
+        }, false);
+
+        // Add custom model request section
+        document.addEventListener('DOMContentLoaded', () => {
+        // Create custom model request section
+        const customModelSection = document.createElement('div');
+        customModelSection.className = 'info-section';
+        customModelSection.innerHTML = `
+        <h3>🎨 Need a Custom Model?</h3>
+        <p>Don't see what you're looking for? We can create custom 3D models tailored to your specific needs!</p>
+        <p><span class="free-use">✏️ CUSTOM DESIGN</span> - We'll work with you to design and create the perfect model for your Trainz project.</p>
+        <p><span class="warning">💼 COMMERCIAL READY</span> - Custom models come with full commercial usage rights for your project.</p>
+        <p><strong>Features:</strong></p>
+        <ul>
+        <li>Custom dimensions and specifications</li>
+        <li>Optimized for Trainz simulator</li>
+        <li>Texturing and materials included</li>
+        <li>Fast turnaround time</li>
+        <li>Complete commercial rights</li>
+        <li>Unlimited usage in your projects</li>
+        </ul>
+        <button id="customModelBtn" class="btn" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); margin-top: 15px;">
+        🛒 Request Custom Model
+        </button>
+        `;
+
+        // Insert before copyright disclaimer
+        const copyrightDisclaimer = document.querySelector('.copyright-disclaimer');
+        copyrightDisclaimer.parentNode.insertBefore(customModelSection, copyrightDisclaimer);
+
+        // Add click event for custom model button
+        document.getElementById('customModelBtn').addEventListener('click', function() {
+        // Navigate to custom model purchase page
+        window.location.href = 'form/model buy.html';
+        });
+
+        // Highlight the button on hover
+        const customBtn = document.getElementById('customModelBtn');
+        customBtn.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-3px)';
+        this.style.boxShadow = '0 10px 20px rgba(238, 90, 36, 0.3)';
+        });
+
+        customBtn.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = 'none';
+        });
+
+        // Add touch feedback for mobile
+        customBtn.addEventListener('touchstart', function() {
+        this.style.transform = 'scale(0.98)';
         }, { passive: true });
 
-        document.addEventListener('touchmove', (e) => {
-        // Prevent scrolling when interacting with search
-        if (document.activeElement === searchBar) {
-        e.preventDefault();
-        }
-        }, { passive: false });
+        customBtn.addEventListener('touchend', function() {
+        this.style.transform = 'scale(1)';
+        }, { passive: true });
+        });
     </script>
 </body>
 </html>
